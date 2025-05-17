@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List</title>
+</head>
+<body>
+  <div>
+    <h1>To Do List</h1>
+    <input id="title" type="text" placeholder="title" />
+    <br><br>
+    <input id="description" type="text" placeholder="description" />
+    <br><br>
+    <button id="Add-Todo">Add todo</button>
+  </div>
+  <br>
+  <div id="container"></div>
+
+  <script>
+    let globalId = 1;
+
+    function completed(todoId) {
+      const parent = document.getElementById(todoId);
+      parent.children[2].innerHTML = "Done";
+      parent.children[2].disabled = true;
+    }
+
+    function createChild(title, description, id) {
+      const outerdiv = document.createElement('div');
+      outerdiv.id = id;
+      
+      const inner1 = document.createElement("div");
+      inner1.innerHTML = `<strong>${title}</strong>`;
+
+      const inner2 = document.createElement("div");
+      inner2.innerText = description;
+
+      const inner3 = document.createElement("button");
+      inner3.innerHTML = "Mark as done";
+      inner3.setAttribute('onclick', `completed(${id})`);
+
+      outerdiv.appendChild(inner1);
+      outerdiv.appendChild(inner2);
+      outerdiv.appendChild(inner3);
+
+      return outerdiv;
+    }
+
+    function addTodos() {
+      const title = document.querySelector("#title").value.trim();
+      const description = document.querySelector("#description").value.trim();
+      const container = document.querySelector("#container");
+
+      if (title === "" || description === "") {
+        alert("Please fill both fields.");
+        return;
+      }
+
+      const todoElement = createChild(title, description, globalId++);
+      container.appendChild(todoElement);
+
+      
+      document.querySelector("#title").value = "";
+      document.querySelector("#description").value = "";
+    }
+
+    const todobutton = document.querySelector("#Add-Todo");
+    todobutton.addEventListener('click', addTodos);
+  </script>
+</body>
+</html>
